@@ -1,0 +1,78 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/juicy-ace-editor/juicy-ace-editor.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="applications-list">
+
+  <template>
+
+    <style is="custom-style">
+      :host {
+        display: block;
+        padding: 16px;
+        margin: 24px;
+      }
+      .flex-vertical {
+        @apply(--layout-vertical);
+        height: 800px;
+      }
+      .flexchild-vertical {
+        @apply(--layout-flex);
+      }
+      .flex-end-justified {
+        @apply(--layout-horizontal);
+        @apply(--layout-end-justified);
+      }
+      .green {
+        background-color: var(--paper-green-500);
+        color: white;
+      }
+    </style>
+
+    <paper-card heading="Code Editor" alt="Code Editor" class="flex-vertical">
+      <juicy-ace-editor class="flexchild-vertical" theme="ace/theme/monokai" mode="ace/mode/python" wrapmode softtabs>from disco.core import Job, result_iterator
+
+def map(line, params):
+    for word in line.split():
+        yield word, 1
+
+def reduce(iter, params):
+    from disco.util import kvgroup
+    for word, counts in kvgroup(sorted(iter)):
+        yield word, sum(counts)
+
+if __name__ == '__main__':
+    job = Job().run(input=["http://discoproject.org/media/text/chekhov.txt"],
+                    map=map,
+                    reduce=reduce)
+    for word, count in result_iterator(job.wait(show=True)):
+        print(word, count)
+      </juicy-ace-editor>
+      <div class="card-actions flex-end-justified">
+        <paper-button class="green">Run!</paper-button>
+      </div>
+    </paper-card>
+
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'applications-list'
+    });
+
+  </script>
+
+</dom-module>
